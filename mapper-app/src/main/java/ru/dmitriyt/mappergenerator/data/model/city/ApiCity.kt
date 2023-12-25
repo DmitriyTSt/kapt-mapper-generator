@@ -1,4 +1,4 @@
-package ru.dmitriyt.mappergenerator.data.model.product
+package ru.dmitriyt.mappergenerator.data.model.city
 
 import ru.dmitriyt.mappergenerator.Mapper
 import ru.dmitriyt.mappergenerator.domain.model.product.City

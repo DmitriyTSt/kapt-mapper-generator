@@ -8,9 +8,10 @@ data class User(
     val id: String,
     val name: String,
     val age: Int,
-    val parent: User,
+    val parent: User?,
     val street: Street,
     val birthday: LocalDate?,
-    val product: Product,
+    val product: List<Product>?,
+    val points: List<Int>,
     val city: City,
 )

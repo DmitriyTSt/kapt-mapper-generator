@@ -1,5 +1,5 @@
 package ru.dmitriyt.mappergenerator.domain.model.product
 
-class Product(
+data class Product(
     val hasId: Boolean,
 )

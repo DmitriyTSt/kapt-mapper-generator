@@ -1,7 +1,7 @@
 package ru.dmitriyt.mappergenerator.data.model
 
 import ru.dmitriyt.mappergenerator.Mapper
-import ru.dmitriyt.mappergenerator.data.model.product.ApiCity
+import ru.dmitriyt.mappergenerator.data.model.city.ApiCity
 import ru.dmitriyt.mappergenerator.data.model.product.ApiProduct
 import ru.dmitriyt.mappergenerator.domain.model.User
 import java.time.LocalDate
@@ -14,6 +14,7 @@ data class ApiUser(
     val parent: ApiUser?,
     val street: ApiStreet?,
     val birthday: LocalDate?,
-    val product: ApiProduct?,
+    val product: List<ApiProduct?>?,
+    val points: List<Int?>?,
     val city: ApiCity?,
 )

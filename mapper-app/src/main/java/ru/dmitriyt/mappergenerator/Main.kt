@@ -2,8 +2,9 @@ package ru.dmitriyt.mappergenerator
 
 import ru.dmitriyt.mappergenerator.data.model.ApiStreet
 import ru.dmitriyt.mappergenerator.data.model.ApiUser
-import ru.dmitriyt.mappergenerator.data.model.product.ApiCity
+import ru.dmitriyt.mappergenerator.data.model.city.ApiCity
 import ru.dmitriyt.mappergenerator.data.model.product.ApiProduct
+import ru.dmitriyt.mappergenerator.data.model.toDomain
 import java.time.LocalDate
 
 fun main() {
@@ -14,9 +15,10 @@ fun main() {
         parent = null,
         street = ApiStreet(null, 1, 1f, 1.0),
         birthday = LocalDate.now(),
-        product = ApiProduct(false),
+        product = listOf(ApiProduct(false)),
+        points = listOf(1, null, 3),
         city = ApiCity(null)
     )
 
-    println(apiUser)
+    println(apiUser.toDomain())
 }

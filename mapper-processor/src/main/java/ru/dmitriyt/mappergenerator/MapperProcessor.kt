@@ -37,6 +37,8 @@ private const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
 
 /**
  * Процессор для создания мапперов
+ * Для использования необходимо повесить на класс-источник аннотацию [Mapper]
+ * Поля в классах должны быть идентичны на соответствующих местах. Корректность работы иначе не гарантируется
  * Поддерживает примитивы, java.time, List, кастомные классы
  * Поддерживает nullable поля и добавляет дефолтные значения
  * Классы java.time не дефолтит
@@ -99,24 +101,27 @@ class MapperProcessor : AbstractProcessor() {
     private fun getConstructorBody(element: Element, targetElement: Element): String {
         val elementFields = element.fields()
         val targetElementFields = targetElement.fields()
-        elementFields.forEachIndexed { index, field ->
-            if (field.simpleName != targetElementFields[index].simpleName) {
-                error("$element has different fields with $targetElement")
-            }
+        val sourceToDestinationFields = elementFields.mapIndexed { index, sourceField ->
+            val targetField = targetElementFields[index]
+            sourceField to targetField
         }
-        return targetElementFields.joinToString(",\n                            ") { getConstructorRow(it) }
+        return sourceToDestinationFields.joinToString(",\n                            ") { (src, dst) ->
+            getConstructorRow(src, dst)
+        }
     }
 
     /**
-     * @param element Element.kind = FIELD
-     * @return строка в конструкторе для поля [element]
+     * @param sourceField исходное поле
+     * @param destinationField поле, которое инициализируем
+     * @return строка в конструкторе для поля
      */
-    private fun getConstructorRow(element: Element): String {
-        return """${element.simpleName} = this?.${element.simpleName}${getConstructorRowSuffix(element)}"""
+    private fun getConstructorRow(sourceField: Element, destinationField: Element): String {
+        val suffix = getConstructorRowSuffix(destinationField)
+        return """${destinationField.simpleName} = this?.${sourceField.simpleName}$suffix"""
     }
 
     /**
-     * @param element Element.kind = FIELD
+     * @param element Element.kind = FIELD (destination)
      * @return суффикс который нужно добавить к полю при его вставке в конструктор результирующего класса
      */
     private fun getConstructorRowSuffix(element: Element): String {
